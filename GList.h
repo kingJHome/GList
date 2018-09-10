@@ -5,9 +5,9 @@ typedef struct GLNode{
 	union{							//原子结构和表结点的联合部分
 		int atom;
 		struct GLNode *hp;
-	};
+	}ptr;
 	struct GLNode *tp;
-}*GList;
+}*GList,GLNode;
 
 typedef union{
 	int atom;
@@ -17,16 +17,16 @@ typedef union{
 typedef void (*_Visit)(int);
 
 //创建空的广义表
-void InitGList(GList l);
+void InitGList(GList *l);
 
 //有s表示的表数据创建表
-void CreateGList(GList l,char *s);
+void CreateGList(GList *l,char *s);
 
 //销毁广义表
-void DestroyGList(GList);
+void DestroyGList(GList l);
 
 //复制广义表
-void CopyGList(GList t,GList l);
+void CopyGList(GList *t,GList l);
 
 //求广义表的长度
 int GListLength(GList l);
@@ -50,4 +50,4 @@ void InsertFirst_GL(GList l,int e);
 void DeleteFirst_GL(GList l,int *e);
 
 //遍历广义表
-void Traverse_GL(GList l,_Visit vt);
+void Traverse_GL(GList l);
