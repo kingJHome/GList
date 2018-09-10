@@ -24,19 +24,23 @@ void serverGListChar(GList *l,GList parent,char *s){
 			(*l)->tag = ATOM;
 			(*l)->ptr.atom = atoi(atom);
 			free(atom);
-			pos += 1;
+			if(s[pos] == ','){
+				pos += 1;
+			}
 			serverGListChar(&((*l)->tp),parent,s+pos);
 		}
 	}else if(s[pos]==')'){
-		if(slen > 1){//最后一个括号
+		if(slen > 1){//不是最后一个反括号
 			if(s[pos+1]==','){
 				pos += 2;
 				serverGListChar(&(parent->tp),parent->tp,s+pos);
 			}else{
 				pos += 1;
-				(*l)->tp = NULL;
-				serverGListChar(&parent,parent->tp,s+pos);
+				*l = NULL;
+				serverGListChar(&(parent->tp),parent->tp,s+pos);
 			}
+		}else if(slen == 1){//最后一个反括号
+			*l = NULL;
 		}
 	}
 }
@@ -202,9 +206,6 @@ void Traverse_GL(GList l){
 		GList temp = l->ptr.hp;
 		for( ; temp; temp = temp->tp){
 			myNodeVisit(temp);
-			if(temp->tp){
-				printf(",");
-			}
 		}
 	}
 	printf(")\n");	
